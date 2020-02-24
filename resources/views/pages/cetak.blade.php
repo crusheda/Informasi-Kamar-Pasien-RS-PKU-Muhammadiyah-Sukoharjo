@@ -14,7 +14,7 @@
         <h4>Data Kunjungan Pasien Per Hari</h4>
         <p>( {{ $yest }} )</p>
     </center>
-    Ini Cetak
+    {{-- Ini Cetak
     <table class="table table-bordered table-hover table-sm">
         <thead>
             <tr>
@@ -115,6 +115,6 @@
                 <td>{{ count($kunjungan['rad']) }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> --}}
 </body>
 </html>
