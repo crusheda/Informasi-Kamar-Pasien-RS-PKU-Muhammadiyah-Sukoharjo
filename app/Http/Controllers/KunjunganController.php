@@ -206,27 +206,20 @@ class KunjunganController extends Controller
         $thn = substr(Carbon::now(),0,4);
 
         $lt3 = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0401' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0401' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null";
         $lt4 = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0402' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0402' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null";
         $keb = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0403' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null AND ta.REF_KELUMUR <> '1'
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0403' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null AND ta.REF_KELUMUR <> '1'";
         $per = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0406' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0406' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null";
         $iso = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0405' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0405' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null";
         $icu = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0400' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK = '0400' AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null";
 
         $tot = "SELECT COUNT(ta.REG_KUNJUNGANPASIEN) as jumlah FROM REG_KUNJUNGANPASIEN ta JOIN TRANS_AKOMODASI ak ON ak.REG_KUNJUNGANPASIEN =  ta.REG_KUNJUNGANPASIEN
-            WHERE ak.REF_SUBINSTALASI_POLIKLINIK IN ('0400','0401','0402','0403','0405','0406') AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null
-            AND right(left(convert(varchar, ta.TGL_REGISTRASI, 112),6),2) = $bln AND left(convert(varchar, ta.TGL_REGISTRASI, 112),4) = $thn";
+            WHERE ak.REF_SUBINSTALASI_POLIKLINIK IN ('0400','0401','0402','0403','0405','0406') AND ak.REF_CARAMASUK = '3' AND ak.TGLKELUAR is null";
 
         $query_lt3 = DB::select($lt3);
         $query_lt4 = DB::select($lt4);
@@ -236,7 +229,7 @@ class KunjunganController extends Controller
         $query_icu = DB::select($icu);
         $query_total = DB::select($tot);
 
-        // print_r($query_keb);
+        // print_r($query_per);
         // die();
 
         $query_akomodasi =[
@@ -424,8 +417,12 @@ class KunjunganController extends Controller
             'akomodasi' => $akomodasi
         ];
 
+        // print_r($kunjungan['igd'][0]->jumlah);
+        // die();
+
         $pdf = PDF::loadView('pages.cetak', $data);
-        return $pdf->download($now);
+        // return $pdf->download($now);
+        return $pdf->stream($now);
     }
 
     /**
